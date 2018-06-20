@@ -2,6 +2,7 @@
 # Creates reports based off the records store in a database.
 import psycopg2
 
+# Storas the database name to connect to
 DBNAME = "news"
 
 
@@ -17,6 +18,7 @@ def query_runner(query):
 
 def main():
 
+    # Stores 3 SQL queiries to answer the report questions.
     most_popular_articles = \
             "select title as article, count(*) as views \
             from log join articles \
@@ -51,9 +53,29 @@ def main():
             as total_requests from log group by cast(time as date)) as requests on errors.date = requests.time) as subq) \
             as error_percentages where error_percentage > 1;"
 
-    print(query_runner(most_popular_articles))
-    print(query_runner(most_popular_authors))
-    print(query_runner(one_percent_errors))
+    # prints  the response from each query in a nice format.
+    result1 = query_runner(most_popular_articles)
+    print("These are the most popular three articles of all time\n")
+    for i in result1:
+        title = i[0]
+        views = str(i[1])
+        print("Title \"" + title + "\" --- " + views + " views")
+    print("\n")
+
+    result2 = query_runner(most_popular_authors)
+    print("These are the most popular article authors of all time\n")
+    for i in result2:
+        author = i[0]
+        views = str(i[1])
+        print("Author \"" + author + "\" --- " + views + " views")
+    print("\n")
+
+    result3 = query_runner(one_percent_errors)
+    print("On the following date, more than 1% of requests lead to errors\n")
+    for i in result3:
+        date = str(i[0])
+        percent = str(i[1])
+        print(date + " --- "+percent + "% errors")
 
 
 if __name__ == "__main__":
