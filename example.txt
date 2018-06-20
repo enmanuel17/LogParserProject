@@ -1,0 +1,20 @@
+vagrant@vagrant:/vagrant/LogParserProject$python3 dbParselog.py
+These are the most popular three articles of all time
+
+Title "Candidate is jerk, alleges rival" --- 338647 views
+Title "Bears love berries, alleges bear" --- 253801 views
+Title "Bad things gone, say good people" --- 170098 views
+
+
+These are the most popular article authors of all time
+
+Author "Ursula La Multa" --- 507594 views
+Author "Rudolf von Treppenwitz" --- 423457 views
+Author "Anonymous Contributor" --- 170098 views
+Author "Markoff Chaney" --- 84557 views
+
+
+On the following date, more than 1% of requests lead to errors
+
+2016-07-17 --- 2% errors
+vagrant@vagrant:/vagrant/LogParserProject$
