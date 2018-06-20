@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-#Creates reports based off the records store in a database.
+# Creates reports based off the records store in a database.
 import psycopg2
 
 DBNAME = "news"
 
+
+# Runs queries on the postgresql database.
 def query_runner(query):
-    """Return all posts from the 'database', most recent first."""
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute(query)
@@ -16,15 +17,14 @@ def query_runner(query):
 
 def main():
 
-     #1. What are the most popular three articles of all time? Which articles have been accessed the most? Present this information as a sorted list with the most popular article at the top.
     most_popular_articles = \
             "select title as article, count(*) as views \
             from log join articles \
             on log.path like concat('%',articles.slug) \
             group by title \
             order by views \
-            desc limit 3;"
-    #2. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? Present this as a sorted list with the most popular author at the top.
+            desc \
+            limit 3;"
     most_popular_authors = \
             "select name,sum(views) as total_views \
             from \
@@ -38,12 +38,23 @@ def main():
             group by name \
             order by total_views \
             desc;"
-    #3. On which days did more than 1% of requests lead to errors? The log table includes a column status that indicates the HTTP status code that the news site sent to the user's browser. (Refer to this lesson for more information about the idea of HTTP status codes.)
-    one_percent_errors = ""
+    one_percent_errors = \
+            "select date, cast(error_percentage as int) from \
+            (select date,(cast(errors as float) / cast(total_requests as float) * 100) as error_percentage \
+            from (select date,total_requests,errors \
+            from (select dates.date,count(*) as errors \
+            from log join dates \
+            on cast(time as date) = dates.date \
+            where status != '200 OK' \
+            group by dates.date,status order by date) \
+            as errors join (select cast(time as date),count(*) \
+            as total_requests from log group by cast(time as date)) as requests on errors.date = requests.time) as subq) \
+            as error_percentages where error_percentage > 1;"
 
     print(query_runner(most_popular_articles))
     print(query_runner(most_popular_authors))
-    #print(query_runner(one_percent_errors))
+    print(query_runner(one_percent_errors))
+
 
 if __name__ == "__main__":
     try:
