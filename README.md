@@ -18,7 +18,7 @@ for more info regarding the library look here http://initd.org/psycopg/docs/inst
 ## Views needed
 Please create this view before running the code:
 ```create view dates as```
-```select cast(time as date) as date from log group by cast(time as date):```
+```select cast(time as date) as date from log group by cast(time as date);```
 
 ## How to Use:
 
