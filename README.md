@@ -36,16 +36,24 @@ Download the database data from here https://d17h27t6h515a5.cloudfront.net/tophe
 use the command psql -d news -f newsdata.sql inside the VM to populate the database server with the database.
 
 ## Views needed
-Please create this view before running the code:
+Please create this view before running the code
+In the command from the VM run the following:
+```psql -d news```
 ```create view dates as```
 ```select cast(time as date) as date from log group by cast(time as date);```
-
-
+Then CTRL + D to exit.
 
 ## How to Use:
-
-The application can be run with the following ways:
+Some of the steps might be optional if you went throught the requierments section.
+1. Open the terminal and navigate to the program files
+2. Run the command vagrant up, then vagrant ssh
+3. Go to the vagrant directory (program files)
+4. Load the database with the command psql -d news -f newsdata.sql
+5. Enter the database ```psql -d news and enter the SQL Views, then exist the database```
+6. Run the application:
 - Typing ```python dbParselog.py``` from the linux command line.
+7. Enjoy the output results displayed on the terminal
+
 
 ## LICENSE
 MIT License
