@@ -8,12 +8,16 @@ DBNAME = "news"
 
 # Runs queries on the postgresql database.
 def query_runner(query):
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(query)
-    result = c.fetchall()
-    db.close()
-    return result
+    try:
+        db = psycopg2.connect(database=DBNAME)
+        c = db.cursor()
+        c.execute(query)
+        result = c.fetchall()
+        db.close()
+        return result
+    except Exception as e:
+        print("Unable to connect to the database")
+        exit(-1)
 
 
 def main():
